@@ -3,28 +3,32 @@ from datetime import date
 
 # Main menu options
 options = {
-    1: "View tasks",
-    2: "Add task to list",
-    3: "Mark task as done",
-    4: "Remove task",
+    1: "View outstanding tasks",
+    2: "View all tasks",
+    3: "Add task to list",
+    4: "Mark task as done",
+    5: "Remove task",
     9: "Exit"
 }
 
 today = date.today()
 
 # Print list of tasks from JSON file, priority sorted by default
-def print_tasks():
+def print_tasks(print_all):
     with open('tasks.json', 'r') as f:
         datastore = json.load(f)
+        task_list = datastore['tasks']
         def sort_by_priority(list):
             return list['priority']
+
         print("   {: <20} {: <7} {: <10} {: <20} {: <20}".format('Task', 'Done?', 'Priority','Creation Date','Notes'))
         print("   -----------------------------------------------------------------------------------")
+
         count = 0
-        for i in sorted(datastore['tasks'], key=sort_by_priority):
+        for i in sorted(task_list, key=sort_by_priority):
             count += 1
-            #print("- " + i['name'] + "                " + i['notes'])
-            print(count, " {: <20} {: <7} {: <10} {: <20} {: <20}".format(i.get('name'),str(i.get('done')),i.get('priority'),i.get('creationdate'),i.get('notes')))
+            if (print_all or not i.get('done')):
+                print(count, " {: <20} {: <7} {: <10} {: <20} {: <20}".format(i.get('name'),str(i.get('done')),i.get('priority'),i.get('creationdate'),i.get('notes')))
     f.close()
 
 # Append a task to the list
@@ -67,8 +71,10 @@ while(True):
     print_menu()
     option = int(input("Enter a number: "))
     selection = options.get(option)
-    if selection == "View tasks":
-        print_tasks()
+    if selection == "View outstanding tasks":
+        print_tasks(False)
+    elif selection == "View all tasks":
+        print_tasks(True)
     elif selection == "Add task to list":
         add_task()
     elif selection == "Mark task as done":
