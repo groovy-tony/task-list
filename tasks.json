@@ -1,0 +1,53 @@
+{
+    "tasks": [
+        {
+            "name": "Wash car",
+            "creationdate": "14/03/2022",
+            "priority": 1,
+            "done": false,
+            "notes": "Wait for cool day and use polish"
+        },
+        {
+            "name": "Wash dog",
+            "creationdate": "20/03/2022",
+            "priority": 2,
+            "done": false,
+            "notes": "Use flea shampoo"
+        },
+        {
+            "name": "Apply for job",
+            "creationdate": "21/03/2022",
+            "priority": 1,
+            "done": true,
+            "notes": ""
+        },
+        {
+            "name": "Learn new song",
+            "creationdate": "23/03/2022",
+            "priority": 3,
+            "done": false,
+            "notes": ""
+        },
+        {
+            "name": "2",
+            "creationdate": "23/03/2022",
+            "priority": 2,
+            "done": false,
+            "notes": "sasdasd"
+        },
+        {
+            "name": "Go to gym",
+            "creationdate": "23/03/2022",
+            "priority": 2,
+            "done": false,
+            "notes": "Leg day"
+        },
+        {
+            "name": "New task 28/3",
+            "creationdate": "28/03/2022",
+            "priority": 1,
+            "done": false,
+            "notes": "name jeff"
+        }
+    ]
+}
