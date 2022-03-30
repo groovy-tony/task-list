@@ -13,19 +13,29 @@ options = {
 
 today = date.today()
 
-# Print list of tasks from JSON file, priority sorted by default
+# Print list of tasks from JSON file.
+# Parameter is a boolean that determines whether only outstanding tasks are printed, or all tasks.
+# List is sorted by completion status then priority.
 def print_tasks(print_all):
     with open('tasks.json', 'r') as f:
         datastore = json.load(f)
         task_list = datastore['tasks']
+
+        # key functions for sorting
         def sort_by_priority(list):
             return list['priority']
+        def sort_by_done(list):
+            return list['done']
+            
+        task_list.sort(key=sort_by_priority)
+        task_list.sort(key=sort_by_done)
 
         print("   {: <20} {: <7} {: <10} {: <20} {: <20}".format('Task', 'Done?', 'Priority','Creation Date','Notes'))
         print("   -----------------------------------------------------------------------------------")
 
+        # iterate through and print sorted list
         count = 0
-        for i in sorted(task_list, key=sort_by_priority):
+        for i in task_list:
             count += 1
             if (print_all or not i.get('done')):
                 print(count, " {: <20} {: <7} {: <10} {: <20} {: <20}".format(i.get('name'),str(i.get('done')),i.get('priority'),i.get('creationdate'),i.get('notes')))
