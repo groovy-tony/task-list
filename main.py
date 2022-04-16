@@ -14,7 +14,8 @@ options = {
 today = date.today()
 
 # Print list of tasks from JSON file.
-# Parameter is a boolean that determines whether only outstanding tasks are printed, or all tasks.
+# Parameter is a boolean that determines output mode. 
+# False = print only uncompleted tasks, True = print all tasks.
 # List is sorted by completion status then priority.
 def print_tasks(print_all):
     with open('tasks.json', 'r') as f:
@@ -40,6 +41,7 @@ def print_tasks(print_all):
             if (print_all or not i.get('done')):
                 print(count, " {: <20} {: <7} {: <10} {: <20} {: <20}".format(i.get('name'),str(i.get('done')),i.get('priority'),i.get('creationdate'),i.get('notes')))
     f.close()
+    return task_list
 
 # Append a task to the list
 def add_task():
@@ -49,11 +51,11 @@ def add_task():
     notes = input("Enter notes (optional)")
     #print(name, " ", creationdate, " ", priority, " ", notes)
     new_data = {
-        "name": name,
-        "creationdate": creationdate,
-        "priority": priority,
-        "done": False,
-        "notes": notes
+    "name": name,
+    "creationdate": creationdate,
+    "priority": priority,
+    "done": False,
+    "notes": notes
     }
 
     # do something here to append this stuff to JSON file
@@ -65,7 +67,25 @@ def add_task():
     f.close()
 
 def complete_task():
-    print("complete_task() not yet implemented")
+    print("\nSelect a task to be marked as completed.\n")
+    task_list = print_tasks(False)
+    option = int(input("\nEnter a number:\n"))
+    #print(task_list.pop(option-1).get('done'))
+    
+    with open('tasks.json', 'r+') as f:
+        datastore = json.load(f)
+        #print(datastore)
+        new_data = {
+            "name": name,
+            "creationdate": creationdate,
+            "priority": priority,
+            "done": False,
+            "notes": notes
+        }
+        #json.dump(datastore, f, indent = 4)
+    f.close()
+    
+
 
 def remove_task():
     print("remove_task() not yet implemented")
