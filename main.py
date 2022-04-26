@@ -89,6 +89,7 @@ def complete_task():
         datastore = json.load(f)
         #print(datastore)
         new_data = {
+            #put id here but need a way to make sure its unique
             "name": name,
             "creationdate": creationdate,
             "priority": priority,
