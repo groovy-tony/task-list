@@ -18,7 +18,7 @@ today = date.today()
 # False = print only uncompleted tasks, True = print all tasks.
 # List is sorted by completion status then priority.
 def print_tasks(print_all):
-    with open('tasks.json', 'r') as f:
+    with open('tasks.json', 'r+') as f:
         datastore = json.load(f)
         task_list = datastore['tasks']
         length = len(task_list)
@@ -38,10 +38,15 @@ def print_tasks(print_all):
 
         # iterate through and print sorted list
         count = 0
-        for i in task_list:
-            count += 1
+        for x,i in enumerate(task_list, start=1):            
+            i['id'] = x
             if (print_all or not i.get('done')):
-                print(" {: <2} {: <20} {: <7} {: <10} {: <20} {: <20}".format(count,i.get('name'),str(i.get('done')),i.get('priority'),i.get('creationdate'),i.get('notes')))
+                print(" {: <2} {: <20} {: <7} {: <10} {: <20} {: <20}".format(x,i.get('name'),str(i.get('done')),i.get('priority'),i.get('creationdate'),i.get('notes')))
+        f.truncate(0)
+        f.seek(0)
+        output = json.dumps(task_list)
+        f.write(output)
+        #json.dump(output, f, indent = 4)
     f.close()
     return task_list
 
@@ -67,7 +72,7 @@ def add_task():
     with open('tasks.json', 'r+') as f:
         datastore = json.load(f)
         new_data = {
-        "id": len(datastore["tasks"])+1,
+        "id": get_length+1,
         "name": name,
         "creationdate": creationdate,
         "priority": priority,
@@ -89,7 +94,7 @@ def complete_task():
         datastore = json.load(f)
         #print(datastore)
         new_data = {
-            #put id here but need a way to make sure its unique
+            "id": get_length+1,
             "name": name,
             "creationdate": creationdate,
             "priority": priority,
