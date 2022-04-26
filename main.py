@@ -20,6 +20,7 @@ def print_tasks(print_all):
     with open('tasks.json', 'r') as f:
         datastore = json.load(f)
         task_list = datastore['tasks']
+        length = len(task_list)
 
         # key functions for sorting
         def sort_by_priority(list):
@@ -32,14 +33,24 @@ def print_tasks(print_all):
 
         print("   {: <20} {: <7} {: <10} {: <20} {: <20}".format('Task', 'Done?', 'Priority','Creation Date','Notes'))
         print("   -----------------------------------------------------------------------------------")
+        #print(length, 'tasks in list')
 
         # iterate through and print sorted list
         count = 0
         for i in task_list:
             count += 1
             if (print_all or not i.get('done')):
-                print(count, " {: <20} {: <7} {: <10} {: <20} {: <20}".format(i.get('name'),str(i.get('done')),i.get('priority'),i.get('creationdate'),i.get('notes')))
+                print(" {: <2} {: <20} {: <7} {: <10} {: <20} {: <20}".format(count,i.get('name'),str(i.get('done')),i.get('priority'),i.get('creationdate'),i.get('notes')))
     f.close()
+
+def get_length():
+    with open('tasks.json', 'r') as f:
+        datastore = json.load(f)
+        task_list = datastore['tasks']
+        length = len(task_list)
+    f.close()
+    return length
+
 
 # Append a task to the list
 def add_task():
@@ -48,17 +59,19 @@ def add_task():
     priority = int(input("Enter priority level for task (1-3)"))
     notes = input("Enter notes (optional)")
     #print(name, " ", creationdate, " ", priority, " ", notes)
-    new_data = {
+    
+
+    # do something here to append this stuff to JSON file
+    with open('tasks.json', 'r+') as f:
+        datastore = json.load(f)
+        new_data = {
+        "id": len(datastore["tasks"])+1,
         "name": name,
         "creationdate": creationdate,
         "priority": priority,
         "done": False,
         "notes": notes
-    }
-
-    # do something here to append this stuff to JSON file
-    with open('tasks.json', 'r+') as f:
-        datastore = json.load(f)
+        }
         datastore["tasks"].append(new_data)
         f.seek(0)
         json.dump(datastore, f, indent = 4)

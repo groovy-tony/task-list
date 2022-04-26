@@ -1,6 +1,7 @@
 {
     "tasks": [
         {
+            "id": 1,
             "name": "Wash car",
             "creationdate": "14/03/2022",
             "priority": 1,
@@ -8,6 +9,7 @@
             "notes": "Wait for cool day and use polish"
         },
         {
+            "id": 2,
             "name": "Wash dog",
             "creationdate": "20/03/2022",
             "priority": 2,
@@ -15,6 +17,7 @@
             "notes": "Use flea shampoo"
         },
         {
+            "id": 3,
             "name": "Apply for job",
             "creationdate": "21/03/2022",
             "priority": 1,
@@ -22,6 +25,7 @@
             "notes": ""
         },
         {
+            "id": 4,
             "name": "Learn new song",
             "creationdate": "23/03/2022",
             "priority": 3,
@@ -29,6 +33,7 @@
             "notes": ""
         },
         {
+            "id": 5,
             "name": "2",
             "creationdate": "23/03/2022",
             "priority": 2,
@@ -36,6 +41,7 @@
             "notes": "sasdasd"
         },
         {
+            "id": 6,
             "name": "Go to gym",
             "creationdate": "23/03/2022",
             "priority": 2,
@@ -43,11 +49,20 @@
             "notes": "Leg day"
         },
         {
+            "id": 7,
             "name": "New task 28/3",
             "creationdate": "28/03/2022",
             "priority": 1,
             "done": false,
             "notes": "name jeff"
+        },
+        {
+            "id": 8,
+            "name": "new task with ID WOW",
+            "creationdate": "26/04/2022",
+            "priority": 2,
+            "done": false,
+            "notes": "now with id"
         }
     ]
 }
