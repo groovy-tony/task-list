@@ -44,8 +44,10 @@ def print_tasks(print_all):
                 print(" {: <2} {: <20} {: <7} {: <10} {: <20} {: <20}".format(x,i.get('name'),str(i.get('done')),i.get('priority'),i.get('creationdate'),i.get('notes')))
         f.truncate(0)
         f.seek(0)
+        #TODO: this changes the structure of the JSON so the logic will require changes
         output = json.dumps(task_list)
         f.write(output)
+        
         #json.dump(output, f, indent = 4)
     f.close()
     return task_list
