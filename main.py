@@ -1,3 +1,4 @@
+import enum
 import json
 from datetime import date
 
@@ -13,15 +14,10 @@ options = {
 
 today = date.today()
 
-# Print list of tasks from JSON file.
-# Parameter is a boolean that determines output mode. 
-# False = print only uncompleted tasks, True = print all tasks.
-# List is sorted by completion status then priority.
-def print_tasks(print_all):
+def init_list():
     with open('tasks.json', 'r+') as f:
         datastore = json.load(f)
-        task_list = datastore['tasks']
-        length = len(task_list)
+        task_list = datastore
 
         # key functions for sorting
         def sort_by_priority(list):
@@ -32,6 +28,23 @@ def print_tasks(print_all):
         task_list.sort(key=sort_by_priority)
         task_list.sort(key=sort_by_done)
 
+        #TODO: reassign id's to change order when new tasks are inserted
+
+        f.truncate(0)
+        f.seek(0)
+        output = json.dumps(task_list, indent=4)
+        f.write(output)
+    f.close()
+
+# Print list of tasks from JSON file.
+# Parameter is a boolean that determines output mode. 
+# False = print only uncompleted tasks, True = print all tasks.
+# List is sorted by completion status then priority.
+def print_tasks(print_all):
+    with open('tasks.json', 'r+') as f:
+        datastore = json.load(f)
+        task_list = datastore
+
         print("   {: <20} {: <7} {: <10} {: <20} {: <20}".format('Task', 'Done?', 'Priority','Creation Date','Notes'))
         print("   -----------------------------------------------------------------------------------")
         #print(length, 'tasks in list')
@@ -39,14 +52,8 @@ def print_tasks(print_all):
         # iterate through and print sorted list
         count = 0
         for x,i in enumerate(task_list, start=1):            
-            i['id'] = x
             if (print_all or not i.get('done')):
-                print(" {: <2} {: <20} {: <7} {: <10} {: <20} {: <20}".format(x,i.get('name'),str(i.get('done')),i.get('priority'),i.get('creationdate'),i.get('notes')))
-        f.truncate(0)
-        f.seek(0)
-        #TODO: this changes the structure of the JSON so the logic will require changes
-        output = json.dumps(task_list)
-        f.write(output)
+                print(" {: <2} {: <20} {: <7} {: <10} {: <20} {: <20}".format(i.get('id'),i.get('name'),str(i.get('done')),i.get('priority'),i.get('creationdate'),i.get('notes')))
         
         #json.dump(output, f, indent = 4)
     f.close()
@@ -55,8 +62,9 @@ def print_tasks(print_all):
 def get_length():
     with open('tasks.json', 'r') as f:
         datastore = json.load(f)
-        task_list = datastore['tasks']
+        task_list = datastore
         length = len(task_list)
+        print('LENGTH = ', length)
     f.close()
     return length
 
@@ -74,14 +82,14 @@ def add_task():
     with open('tasks.json', 'r+') as f:
         datastore = json.load(f)
         new_data = {
-        "id": get_length+1,
+        "id": get_length()+1,
         "name": name,
         "creationdate": creationdate,
         "priority": priority,
         "done": False,
         "notes": notes
         }
-        datastore["tasks"].append(new_data)
+        datastore.append(new_data)
         f.seek(0)
         json.dump(datastore, f, indent = 4)
     f.close()
@@ -106,8 +114,6 @@ def complete_task():
         #json.dump(datastore, f, indent = 4)
     f.close()
     
-
-
 def remove_task():
     print("remove_task() not yet implemented")
 
@@ -118,7 +124,8 @@ def print_menu():
         print(i,")", options[i])
     print()
 
-while(True):
+init_list()
+while(True):    
     print_menu()
     option = int(input("Enter a number: "))
     selection = options.get(option)
