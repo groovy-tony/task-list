@@ -12,6 +12,7 @@ options = {
     9: "Exit"
 }
 
+# a
 today = date.today()
 
 def init_list():
