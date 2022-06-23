@@ -1,5 +1,8 @@
-import enum
+import tasklistgui
 import json
+import sys
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication
 from datetime import date
 
 # Main menu options
@@ -12,7 +15,6 @@ options = {
     9: "Exit"
 }
 
-# a
 today = date.today()
 
 def init_list():
@@ -36,6 +38,14 @@ def init_list():
         output = json.dumps(task_list, indent=4)
         f.write(output)
     f.close()
+
+# Load task list into the QListView
+def load_tasks(form):
+    with open('tasks.json', 'r+') as f:
+        datastore = json.load(f)
+        f.close()
+    for i in datastore:
+        print(i)
 
 # Print list of tasks from JSON file.
 # Parameter is a boolean that determines output mode. 
@@ -125,25 +135,43 @@ def print_menu():
         print(i,")", options[i])
     print()
 
-init_list()
-while(True):    
-    print_menu()
-    option = int(input("Enter a number: "))
-    selection = options.get(option)
-    if selection == "View outstanding tasks":
-        print_tasks(False)
-    elif selection == "View all tasks":
-        print_tasks(True)
-    elif selection == "Add task to list":
-        add_task()
-    elif selection == "Mark task as done":
-        complete_task()
-    elif selection == "Remove task":
-        remove_task()
-    elif option == 9:
-        break
-    else:
-        print("Invalid selection. Please enter a number corresponding to one of the options on the list.")
+class tasklistgui(QtWidgets.QMainWindow, tasklistgui.Ui_MainWindow):
+    def __init__(self):
+        super(tasklistgui, self).__init__()
+        self.setupUi(self)
+        self.exitButton.clicked.connect(self.exitButton_clicked)
+
+    def exitButton_clicked(self):
+        sys.exit()
+
+
+if __name__ == '__main__':
+    init_list()
+    app = QtWidgets.QApplication(sys.argv)
+    form = tasklistgui()
+    load_tasks(form)
+    form.show()
+    app.exec_()
+
+# terminal menu
+# while(True):
+#     print_menu()
+#     option = int(input("Enter a number: "))
+#     selection = options.get(option)
+#     if selection == "View outstanding tasks":
+#         print_tasks(False)
+#     elif selection == "View all tasks":
+#         print_tasks(True)
+#     elif selection == "Add task to list":
+#         add_task()
+#     elif selection == "Mark task as done":
+#         complete_task()
+#     elif selection == "Remove task":
+#         remove_task()
+#     elif option == 9:
+#         break
+#     else:
+#         print("Invalid selection. Please enter a number corresponding to one of the options on the list.")
     
 
 
